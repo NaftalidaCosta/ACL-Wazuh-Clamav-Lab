@@ -8,7 +8,7 @@ Ao configurar a integração do clamav (anti-malware for Linux) com o Wazuh Mana
 O clamav é uma suíte de anti-malware para sistemas baseado no kernel Linux, essa suíte é composta por clamdscan, freshclam e clamscan. O clamdscan requer privilégio execute (x) e write (w) para executar uma solicitação de escanear para o serviço clamd via socket, o database das assinaturas fica na memória e o clamd realizar o escanear ou varredura para os directory e files que foram solicitados previamente pelo o cliente (clamdscan), pense como: anti-malware já estava ligado/ativo e apenas realizou-se a varredura, melhor do que carregar todo o database de assinaturas para cada scan, isso que o clamscan faz. Se/Quando realizar 6 scan usando o clamscan,ele [clamascan] vai carregar todo database nas 6 vezes.
 
 Tentei realizar a varredura na pasta **/home/naftali/** as permissões da pastas naftali/ são "drwx--x---".
-Isso quer dizer que nenhum outro grupo ou usuário pode ler e executar arquivos dentro da pasta "naftali/" — a primeira coisa que veio na minha cabeça — vou executar um chmod 775 naftali e continuar o meu laboratório virtual, mas depois me perguntei e se fosse no servidor do banco? da empresa? o que eu faria? Surgiu a curiosidade de buscar e implantar uma solução mais madura (privilégio mínimo) - lembrei das perguntas do Mr. Dony Bellino.
+Isso quer dizer que nenhum outro grupo ou usuário pode ler e executar arquivos dentro da pasta "naftali/" — a primeira coisa que veio na minha cabeça — vou executar um chmod 775 naftali e continuar o meu laboratório virtual, mas depois me perguntei e se fosse no servidor do banco? da empresa? o que eu faria? Então,  surgiu a curiosidade de buscar e implantar uma solução mais madura (privilégio mínimo) - lembrei das perguntas do Mr. Dony Bellino.
 
 Depois de 5 minutos de pesquisa encontrei um software no Ubuntu 24, a solução é "acl" ou em português — lista de controle de acesso. Vamos instalar? "apt install acl -y". Para definir a "ACE" ou "entradas de lista de acesso" deve-se usar o  comando "setfacl" e para visualizar as ACE de uma pasta ou arquivo deve-se usar o comando "getfacl".
 
@@ -28,7 +28,7 @@ O objetivo é permitir com que a ferramenta clamdscan leia e execute as pastas e
 
 ## Instalação da ferramenta acl via apt.
 
-- Para instalar a ferramenta use  o comando "sudo apt install acl -y"
+- Para instalar a ferramenta usei o comando "sudo apt install acl -y"
 - A razão do erro, foi porque eu executei a ferramenta apt com baixo privilégio, ou seja, sem o sudo.
 
 <img width="1286" height="395" alt="2" src="https://github.com/user-attachments/assets/321985c8-3619-423c-8d34-3e6883cf6aa3" />
@@ -40,11 +40,11 @@ O objetivo é permitir com que a ferramenta clamdscan leia e execute as pastas e
 Por meio do  parâmetro X (maiusculo) a ferramenta não executar arquivos/pastas que tenham permissões iguais a pasta "/home/naftali/.ssh/".
 ```
 ```
-2 -  naftali@ubuntu:/home setfacl -R -m u:clamav:r-X naftali/ - Para já, aplica a regra em arquivos/pastas já existentes. 
-3 -  naftali@ubuntu:/home setfacl -R -m m:r-X naftali/ ->> Defini a mask para impedir atribuição da permisão escrita (w) via setfacl -R -m u:clamav:rwX naftali/ 
+2 -  naftali@ubuntu:/home setfacl -R -m u:clamav:r-X naftali/ -->> Para já, aplica a regra em arquivos/pastas já existentes. 
+3 -  naftali@ubuntu:/home setfacl -R -m m:r-X naftali/ -->> Defini a mask para impedir atribuição da permissão escrita (w) via setfacl -R -m u:clamav:rwX naftali/ 
 ```
 
-- Depois de difinir as regras, usei o comanodo getfacl para ver o status das permissões na pasta naftali/.
+- Depois de difinir as regras, usei o comando **getfacl** para ver o status das permissões na pasta naftali/.
 - OBS: Dentro da pasta naftali tem dois arquivos do https://www[.]eicar[.]org
 - Em seguida, tentei novamente executar o comando **clamdscan naftali/** e funcionou.
 - Dois arquivos com a assinatura do eicar foram encontrados na pasta **naftali**.
@@ -53,7 +53,7 @@ Por meio do  parâmetro X (maiusculo) a ferramenta não executar arquivos/pastas
 <img width="599" height="598" alt="3" src="https://github.com/user-attachments/assets/3182f77c-86d8-48b6-9939-6c62ef86a6d1" />
 
 ## Wazuh - Security events
-- A imagem abaixo mostra 3 eventos de segurança, um evento 1 com nivél de regra 3 e dois eventos com o nivel de regra 8.
+- A imagem abaixo mostra 3 eventos de segurança, um evento 1 com nivél de regra 3 e dois eventos com o nivél de regra 8.
 - Os eventos de segurança com o id de regra *52502**, tem uma descrição referente a detecção de vírus por meio do suite clamav.
 - O evento de segurança com o nivél de regra 3 está relacionado ao modulo de autenticação do sistema Ubuntu, provavelmente uma sessão root foi fechada.
 >
@@ -61,7 +61,7 @@ Por meio do  parâmetro X (maiusculo) a ferramenta não executar arquivos/pastas
 
 ## Detalhes - Clamav: Virus detected
 
-- As imagens abaixo fornem mais informações detalhadas como id do agente, nome do agente, caminho completo arquivo detectado como vírus, descrição da regra e horario da detecção.
+- As imagens abaixo fornem mais informações detalhadas como id do agente, nome do agente, caminho completo arquivo detectado como vírus, descrição da regra e horário da detecção.
 
 >
 <img width="1364" height="642" alt="5" src="https://github.com/user-attachments/assets/a2ea7b51-faa8-40e3-aa5f-dfa93b2d1c15" />
