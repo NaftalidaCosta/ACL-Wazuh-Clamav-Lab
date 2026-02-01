@@ -48,7 +48,7 @@ Por meio do  parâmetro X (maiusculo) a ferramenta não executar arquivos/pastas
 - OBS: Dentro da pasta naftali tem dois arquivos do https://www[.]eicar[.]org
 - Em seguida, tentei novamente executar o comando **clamdscan naftali/** e funcionou.
 - Dois arquivos com a assinatura do eicar foram encontrados na pasta **naftali**.
-- Como a intergrão com o clamav já foi feita e o agente wazuh já enstá instalado e ativado. O wazuh vai mostra uma alerta nos eventos de segurança.  
+- Como a integração com o clamav já foi feita e o agente wazuh já enstá instalado e ativado. O wazuh vai mostra uma alerta nos eventos de segurança.  
 >
 <img width="599" height="598" alt="3" src="https://github.com/user-attachments/assets/3182f77c-86d8-48b6-9939-6c62ef86a6d1" />
 
