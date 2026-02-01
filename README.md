@@ -66,6 +66,6 @@ Por meio do  parâmetro X (maiusculo) a ferramenta não executar arquivos/pastas
 >
 <img width="1362" height="593" alt="6" src="https://github.com/user-attachments/assets/a6a979a3-e08a-4ec5-915f-f278cc9b2446" />
 
-Resources:
-Comunidade Ubuntu: https://help.ubuntu.com/community/FilePermissionsACLs
-Integração wazuh com o clamav: https://documentation.wazuh.com/current/user-manual/capabilities/malware-detection/clam-av-logs-collection.html
+> Resources:
+> Comunidade Ubuntu: https://help.ubuntu.com/community/FilePermissionsACLs
+> Integração wazuh com o clamav: https://documentation.wazuh.com/current/user-manual/capabilities/malware-detection/clam-av-logs-collection.html
